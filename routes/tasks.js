@@ -42,4 +42,56 @@ router.post("/", (req, res) => {
   res.status(201).json(task);
 });
 
+// Update task
+router.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, description, status, priority, dueDate } = req.body;
+
+  const existingTask = db
+    .prepare("SELECT * FROM tasks WHERE id = ?")
+    .get(id);
+
+  if (!existingTask) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+
+  const updatedTask = {
+    title: title ?? existingTask.title,
+    description: description ?? existingTask.description,
+    status: status ?? existingTask.status,
+    priority: priority ?? existingTask.priority,
+    dueDate: dueDate ?? existingTask.dueDate,
+    id
+  };
+
+  db.prepare(`
+    UPDATE tasks
+    SET
+      title = @title,
+      description = @description,
+      status = @status,
+      priority = @priority,
+      dueDate = @dueDate
+    WHERE id = @id
+  `).run(updatedTask);
+
+  res.json({ ...existingTask, ...updatedTask });
+});
+
+// Delete task
+router.delete("/:id", (req, res) => {
+  const { id } = req.params;
+
+  const result = db
+    .prepare("DELETE FROM tasks WHERE id = ?")
+    .run(id);
+
+  if (result.changes === 0) {
+    return res.status(404).json({ error: "Task not found" });
+  }
+
+  res.status(204).send();
+});
+
+
 module.exports = router;

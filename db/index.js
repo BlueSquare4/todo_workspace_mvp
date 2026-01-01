@@ -4,7 +4,6 @@ const path = require("path");
 const dbPath = path.join(__dirname, "tasks.db");
 const db = new Database(dbPath);
 
-// Create table once
 db.prepare(`
   CREATE TABLE IF NOT EXISTS tasks (
     id TEXT PRIMARY KEY,
