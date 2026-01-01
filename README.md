@@ -76,4 +76,3 @@ Returns `204 No Content` on success.
 * Schema-level constraints ensure valid task states.
 * Database is initialized automatically on server start.
 
-```
