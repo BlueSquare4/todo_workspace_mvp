@@ -77,5 +77,3 @@ Returns `204 No Content` on success.
 * Database is initialized automatically on server start.
 
 ```
-
----
