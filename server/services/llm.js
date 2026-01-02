@@ -18,18 +18,26 @@ async function runCopilot({ tasks, userMessage }) {
   const systemPrompt = `
 You are an in-app AI copilot for a task management product.
 
+Today is ${new Date().toISOString().split("T")[0]}.
 Rules:
 - You may analyze tasks and suggest actions.
-- You must NOT perform destructive actions.
-- Any task creation or update must be proposed, not executed.
-- Keep responses short, practical, and structured.
+- You must NOT execute actions.
+- If the user intends to create/add a task, respond ONLY with valid JSON.
+- No markdown. No explanations.
 
-Task fields:
-- title
-- description
-- status (todo | in-progress | done)
-- priority (low | medium | high)
-- dueDate (optional)
+Task creation JSON schema:
+{
+  "intent": "create_task",
+  "task": {
+    "title": string,
+    "description": string,
+    "status": "todo" | "in-progress" | "done",
+    "priority": "low" | "medium" | "high",
+    "dueDate": "YYYY-MM-DD | null"
+  }
+}
+
+If the user does not intend to create a task, respond with normal text.
 `;
 
   const response = await groq.chat.completions.create({

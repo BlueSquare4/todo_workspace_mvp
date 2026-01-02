@@ -17,14 +17,28 @@ router.post("/ask", async (req, res) => {
     ORDER BY createdAt DESC
   `).all();
 
-  const aiResponse = await runCopilot({
-    tasks,
-    userMessage: message
-  });
+  const raw = await runCopilot({ tasks, userMessage: message });
 
+  const parsed = (() => {
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  })();
+
+  // If Copilot proposes a task → return proposal only
+  if (parsed?.intent === "create_task") {
+    return res.json({
+      type: "task_proposal",
+      task: parsed.task
+    });
+  }
+
+  // Otherwise normal chat
   res.json({
-    response: aiResponse,
-    note: "AI suggestions only. No actions executed."
+    type: "message",
+    response: raw
   });
 });
 
