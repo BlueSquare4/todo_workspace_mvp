@@ -60,10 +60,30 @@ Available intents:
   "taskId": string
 }
 
+4) Break task into subtasks
+{
+  "intent": "break_into_subtasks",
+  "taskId": string,
+  "subtasks": [
+    {
+      "title": string,
+      "description": string
+    }
+  ]
+}
+
 Rules for task identification:
 - Always infer taskId from the provided task list.
 - If multiple tasks match, ask the user to clarify instead of guessing.
 - Never invent task IDs.
+
+
+Rules for breaking into subtasks:
+- Generate 3–6 actionable subtasks
+- Subtasks should be concrete and sequential
+- Do not create subtasks automatically
+- If the task is already specific, say so instead of forcing subtasks
+
 
 If no action is intended, respond with normal conversational text.
 `;

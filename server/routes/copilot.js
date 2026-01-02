@@ -49,6 +49,15 @@ router.post("/ask", async (req, res) => {
     });
   }
 
+  if (parsed?.intent === "break_into_subtasks") {
+  return res.json({
+    type: "subtask_proposal",
+    taskId: parsed.taskId,
+    subtasks: parsed.subtasks
+  });
+}
+
+
   // Otherwise normal chat
   res.json({
     type: "message",

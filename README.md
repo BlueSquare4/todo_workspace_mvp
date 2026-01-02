@@ -7,17 +7,18 @@ A full-stack task/workspace application with an embedded AI Copilot that helps u
 ## Project Structure
 
 ```
+
 ├── frontend
 ├── server
-    ├──db
-        ├──index.js
-    ├──routes
-        ├──ai.js
-        ├──copilot.js
-        ├──tasks.js
-    ├──services
-        ├──llm.js
-    ├──index.js
+│   ├── db
+│   │   └── index.js
+│   ├── routes
+│   │   ├── ai.js
+│   │   ├── copilot.js
+│   │   └── tasks.js
+│   ├── services
+│   │   └── llm.js
+│   └── index.js
 └── README.md
 
 ```
@@ -46,35 +47,53 @@ A full-stack task/workspace application with an embedded AI Copilot that helps u
 - AI-generated **task title suggestions** while typing (debounced)
 - Clickable AI suggestions to improve task titles
 - Automatic AI-generated task description after selecting a title suggestion
-- Suggestions close automatically on input blur
+- Suggestions close automatically when the input loses focus
 
 #### In-App AI Copilot Chat
 - Floating Copilot button that expands into a chat panel
-- Scrollable chat history
+- Scrollable chat history with auto-scroll
 - Markdown-rendered AI responses
-- Auto-scroll to the latest message
-- Clear separation between AI suggestions and user actions
+- Clear visual separation between AI suggestions and user actions
 
-#### AI-Driven Task Creation
-- Create tasks by prompting the Copilot in natural language
+#### AI-Driven Task Creation & Management
+- Create tasks using natural language prompts
+- Update tasks (status, priority, due date, description) via Copilot
+- Delete tasks via Copilot with explicit confirmation
 - Copilot infers:
   - Title
   - Description
   - Status
   - Priority
-  - Due date (including relative dates)
-- AI proposes task creation without auto-executing
-- User confirmation required before task creation
-- Confirmation message shown in chat after task is created
+  - Due date (including relative dates like “tomorrow”)
+- AI **never auto-executes** actions
+- All create / update / delete operations require user confirmation
+- Confirmation messages are shown inside the Copilot chat after actions
 
 ---
 
-### Safety & UX Guardrails
-- AI never mutates data without explicit user approval
-- No destructive actions without confirmation
-- Read-only AI context endpoints
-- Defensive parsing of AI outputs
-- Clear distinction between AI suggestions and system actions
+## Product & UX Thinking
+
+### Copilot as a Product Feature
+The Copilot is designed to feel like a **natural part of the product**, not a bolted-on chatbot. AI assistance appears only at moments where it reduces friction and adds clarity.
+
+### When does AI assist automatically?
+- While typing a task title, AI suggests clearer alternatives
+- When a suggestion is selected, AI auto-generates a concise description
+- In chat, AI interprets user intent into structured task proposals
+
+### How does the user trust the AI?
+- Every AI-initiated action is visible and reviewable
+- Confirmation cards clearly show what will change
+- Chat feedback confirms every successful action
+- No hidden or background AI mutations
+
+### How are unexpected or harmful actions avoided?
+- AI never directly mutates application state
+- All destructive actions (delete) require explicit confirmation
+- Ambiguous requests trigger clarification instead of guessing
+- AI operates strictly on provided task context and never invents task IDs
+
+This separation ensures predictability, safety, and debuggability.
 
 ---
 
@@ -83,16 +102,16 @@ A full-stack task/workspace application with an embedded AI Copilot that helps u
 ### Total Backend Endpoints: **8**
 
 #### Task APIs
-1. `GET /health` – Health check
-2. `GET /tasks` – Fetch all tasks
-3. `POST /tasks` – Create a new task
-4. `PUT /tasks/:id` – Update task (status / priority / fields)
-5. `DELETE /tasks/:id` – Delete task
-6. `GET /tasks/context` – AI-safe, read-only task context
+1. `GET /health` – Health check  
+2. `GET /tasks` – Fetch all tasks  
+3. `POST /tasks` – Create a new task  
+4. `PUT /tasks/:id` – Update task  
+5. `DELETE /tasks/:id` – Delete task  
+6. `GET /tasks/context` – AI-safe, read-only task context  
 
 #### AI APIs
-7. `POST /ai/task-suggestions` – AI title suggestions + description generation
-8. `POST /copilot/ask` – Copilot reasoning and task proposal endpoint
+7. `POST /ai/task-suggestions` – AI title suggestions & description generation  
+8. `POST /copilot/ask` – Copilot reasoning and task proposal endpoint  
 
 ---
 
@@ -112,17 +131,22 @@ A full-stack task/workspace application with an embedded AI Copilot that helps u
 
 ---
 
-## Key Design Principles
-
-- Small but complete MVP
-- Product-first AI integration
+## Safety & Guardrails
 - Human-in-the-loop for all state changes
-- Clear separation of concerns (UI, API, AI)
-- Defensive and predictable AI behavior
+- Defensive parsing of AI outputs
+- No silent failures or background AI actions
+- Clear distinction between AI suggestions and system execution
+
+
+---
+
+## Future Scope
+- Task completion analytics (e.g., weekly summaries)
+- Due-date reminders and notifications
+- Multi-user workspaces and collaboration 
 
 ---
 
 ## Status
 
-All core requirements and AI-driven enhancements have been implemented and integrated end-to-end.
-
+All core requirements, AI-driven features, and safety guardrails have been implemented and integrated end-to-end.
