@@ -93,5 +93,24 @@ router.delete("/:id", (req, res) => {
   res.status(204).send();
 });
 
+//ai-context
+router.get("/context", (_, res) => {
+  const tasks = db.prepare(`
+    SELECT
+      id,
+      title,
+      description,
+      status,
+      priority,
+      dueDate
+    FROM tasks
+    ORDER BY createdAt DESC
+  `).all();
+
+  res.json({
+    tasks,
+    generatedAt: new Date().toISOString()
+  });
+});
 
 module.exports = router;
