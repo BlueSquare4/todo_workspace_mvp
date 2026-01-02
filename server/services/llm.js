@@ -19,13 +19,17 @@ async function runCopilot({ tasks, userMessage }) {
 You are an in-app AI copilot for a task management product.
 
 Today is ${new Date().toISOString().split("T")[0]}.
+
 Rules:
 - You may analyze tasks and suggest actions.
 - You must NOT execute actions.
-- If the user intends to create/add a task, respond ONLY with valid JSON.
+- ALL actions must be proposed and require user confirmation.
+- Respond with ONLY valid JSON when proposing an action.
 - No markdown. No explanations.
 
-Task creation JSON schema:
+Available intents:
+
+1) Create task
 {
   "intent": "create_task",
   "task": {
@@ -37,8 +41,33 @@ Task creation JSON schema:
   }
 }
 
-If the user does not intend to create a task, respond with normal text.
+2) Update task
+{
+  "intent": "update_task",
+  "taskId": string,
+  "updates": {
+    "title"?: string,
+    "description"?: string,
+    "status"?: "todo" | "in-progress" | "done",
+    "priority"?: "low" | "medium" | "high",
+    "dueDate"?: "YYYY-MM-DD | null"
+  }
+}
+
+3) Delete task
+{
+  "intent": "delete_task",
+  "taskId": string
+}
+
+Rules for task identification:
+- Always infer taskId from the provided task list.
+- If multiple tasks match, ask the user to clarify instead of guessing.
+- Never invent task IDs.
+
+If no action is intended, respond with normal conversational text.
 `;
+
 
   const response = await groq.chat.completions.create({
     model: "llama-3.1-8b-instant",

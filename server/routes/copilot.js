@@ -35,6 +35,20 @@ router.post("/ask", async (req, res) => {
     });
   }
 
+  if(parsed?.intent === "update_task") {
+    return res.json({
+      type: "update_proposal",
+      taskId: parsed.taskId,
+      updates: parsed.updates
+    });
+  }
+  if(parsed?.intent === "delete_task") {
+    return res.json({
+      type: "delete_proposal",
+      taskId: parsed.taskId
+    });
+  }
+
   // Otherwise normal chat
   res.json({
     type: "message",
