@@ -312,6 +312,22 @@ All **state-mutating actions** (create, update, delete) require explicit user co
 
 ---
 
-## Status
+## Site Walkthrough (Demo Video)
 
-All core requirements, AI-driven features, and safety guardrails have been implemented and integrated end-to-end.
+A short demo walkthrough of the application is available here:
+
+🔗 **Video Demo:**  
+https://drive.google.com/file/d/1L9hM_I21xgbPOmLMMpz24vJz8i2Ug_fw/view?usp=sharing
+
+### What the demo covers:
+- Overall UI and navigation (Light & Dark mode)
+- Core task management (create, update, delete)
+- AI-assisted title suggestions and description generation
+- Copilot chat interface and interaction flow
+- AI-driven task creation with confirmation
+- AI-driven task updates and deletion
+- Breaking vague tasks into actionable subtasks
+- UX and product design reasoning behind AI guardrails
+
+The walkthrough highlights how the Copilot is designed to feel like a **natural part of the product**, with a strong emphasis on transparency, safety, and user control.
+
