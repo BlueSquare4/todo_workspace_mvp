@@ -73,6 +73,9 @@ Navigate to **[http://localhost:3000](http://localhost:3000)** and start creatin
 ### AI Copilot in Action
 ![AI Copilot Feature](Screenshot_ai_copilot.png)
 
+### AI-Assisted Task Decomposition
+![Breaking tasks into smaller actionable subtasks](Screenshot_subtask.png)
+
 ---
 
 ## Project Structure
